@@ -87,12 +87,12 @@ ll shufFlushBuf(FILE* f) {
     return bytesWritten;
 }
 
-ll readLine(char* buf, FILE* f) {
+ll readLine(char* buf, FILE* f, bool skip = false) {
     ll initialBufPos = bufPos, c = 0;
     while ((c = fgetc(f)) != EOF) {
         buf[bufPos++] = c;
         if (c == '\n') {
-            shufIndexes.push_back(initialBufPos);
+            if(!skip) shufIndexes.push_back(initialBufPos);
             return bufPos - initialBufPos;
         }
     }
@@ -150,7 +150,7 @@ ll fillBufAndMarkLines(char* buf, FILE* f) {
     return bufPos;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     char const* tmpDir = std::getenv("TMPDIR");
@@ -171,6 +171,12 @@ int main() {
     }
 
     fprintf(stderr, "\nstarting read\n");
+
+    if (argc == 2 && std::string(argv[1]) == "--skip") {
+        fprintf(stderr, "\nskipping first line\n");
+        ll size = readLine(buf, stdin, true);
+        fwrite(buf, sizeof(char), size, stdout);
+    }
 
     ll newBufPos = 0;
     ll totalBytesRead = 0, totalLinesRead = 0;
