@@ -172,8 +172,8 @@ int main(int argc, char* argv[]) {
 
     fprintf(stderr, "\nstarting read\n");
 
-    if (argc == 2 && std::string(argv[1]) == "--skip") {
-        fprintf(stderr, "\nskipping first line\n");
+    if (argc == 2 && std::string(argv[1]) == "--forward-header") {
+        fprintf(stderr, "\nforwarding first line\n");
         ll size = readLine(buf, stdin, true);
         fwrite(buf, sizeof(char), size, stdout);
     }
