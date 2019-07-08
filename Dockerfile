@@ -1,0 +1,3 @@
+FROM multiarch/crossbuild
+
+COPY . .
